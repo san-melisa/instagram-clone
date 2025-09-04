@@ -28,3 +28,18 @@ const posts = [
     }
 ]
 
+
+const likeBtnb = document.getElementById("like-btn")
+const likesEl = document.getElementById("likes")
+
+const likesText = likesEl.textContent
+
+let number = parseInt(likesText.match(/\d+/)[0])
+
+
+likeBtnb.addEventListener("click", function(){
+    console.log("clicked")
+    number++
+    likesEl.innerHTML = `<strong>${number} likes</strong>`
+
+})

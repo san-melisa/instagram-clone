@@ -36,6 +36,12 @@ header {
 
 .icon-img {
     width: 35px;
+    
+}
+
+.icon-img:hover, .icon-img:focus {
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 .post-header {
