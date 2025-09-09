@@ -1,45 +1,36 @@
-const posts = [
-    {
-        name: "Vincent van Gogh",
-        username: "vincey1853",
-        location: "Zundert, Netherlands",
-        avatar: "images/avatar-vangogh.jpg",
-        post: "images/post-vangogh.jpg",
-        comment: "just took a few mushrooms lol",
-        likes: 21
-    },
-    {
-        name: "Gustave Courbet",
-        username: "gus1819",
-        location: "Ornans, France",
-        avatar: "images/avatar-courbet.jpg",
-        post: "images/post-courbet.jpg",
-        comment: "i'm feelin a bit stressed tbh",
-        likes: 4
-    },
-        {
-        name: "Joseph Ducreux",
-        username: "jd1735",
-        location: "Paris, France",
-        avatar: "images/avatar-ducreux.jpg",
-        post: "images/post-ducreux.jpg",
-        comment: "gm friends! which coin are YOU stacking up today?? post below and WAGMI!",
-        likes: 152
-    }
-]
+import { posts } from "./data.js";
 
+const likeBtnb = document.getElementById("like-btn");
+const likesEl = document.getElementById("likes");
 
-const likeBtnb = document.getElementById("like-btn")
-const likesEl = document.getElementById("likes")
+const postEl = document.getElementById("post");
 
-const likesText = likesEl.textContent
+function renderPosts() {
+  let postHTML = "";
+  for (const post of posts) {
+    postHTML =
+      postHTML +
+      `
+                  <div class="post-header">
+                <img src="${post.avatar}" class="user-img" alt="user avatar" />
+                <div class="post-user-info">
+                <p><strong>${post.name}</strong></p>
+                <p>${post.location}</p>
+                </div>
+            </div>
+            <img src="${post.post}" class="post-img" alt="user post" />
+            <div class="post-actions">
+                <img id="like-btn" src="images/icon-heart.png" class="icon-img" alt="like button" />
+                <img src="images/icon-comment.png" class="icon-img" alt="comment button" />
+                <img src="images/icon-dm.png" class="icon-img" alt="dm button" />
+            </div>
+            <div class="post-likes">
+                <p id="likes"><strong>${post.likes} likes</strong></p>
+                <p><strong>${post.username}</strong> ${post.comment}</p>
+            </div>
+        `;
+  }
+  postEl.innerHTML = postHTML;
+}
 
-let number = parseInt(likesText.match(/\d+/)[0])
-
-
-likeBtnb.addEventListener("click", function(){
-    console.log("clicked")
-    number++
-    likesEl.innerHTML = `<strong>${number} likes</strong>`
-
-})
+renderPosts();
