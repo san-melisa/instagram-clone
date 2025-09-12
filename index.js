@@ -1,13 +1,50 @@
 import { posts } from "./data.js";
 
-const likeBtnb = document.getElementById("like-btn");
-const likesEl = document.getElementById("likes");
-
 const postEl = document.getElementById("post");
+
+let likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
+
+for (const post of posts) {
+  if (likedPosts.includes(post.id)) {
+    post.isLiked = true;
+  }
+}
+
+document.addEventListener("click", function (e) {
+  if (e.target.id === "like-btn") {
+    handleLikeBtnClick(e.target.dataset.like);
+  }
+});
+
+function handleLikeBtnClick(postId) {
+  const post = posts.filter(function (post) {
+    return post.id === Number(postId);
+  })[0];
+
+  if (!post) return;
+
+  if (post.isLiked) {
+    post.likes--;
+    likedPosts = likedPosts.filter((id) => id !== post.id);
+  } else {
+    post.likes++;
+    likedPosts.push(post.id);
+  }
+  post.isLiked = !post.isLiked;
+
+  localStorage.setItem("likedPosts",JSON.stringify(likedPosts));
+
+  renderPosts();
+}
 
 function renderPosts() {
   let postHTML = "";
   for (const post of posts) {
+    let likeClass = "";
+    if (post.isLiked) {
+      likeClass = "liked";
+    }
+
     postHTML =
       postHTML +
       `
@@ -20,9 +57,18 @@ function renderPosts() {
             </div>
             <img src="${post.post}" class="post-img" alt="user post" />
             <div class="post-actions">
-                <img id="like-btn" src="images/icon-heart.png" class="icon-img" alt="like button" />
-                <img src="images/icon-comment.png" class="icon-img" alt="comment button" />
-                <img src="images/icon-dm.png" class="icon-img" alt="dm button" />
+            <i id="like-btn" 
+            class="${post.isLiked ? "fa-solid" : "fa-regular"} fa-heart icon-img ${likeClass}" 
+            data-like="${post.id}">
+          </i>
+
+          <i class="fa-regular fa-comment icon-img" 
+            id="comment-btn">
+          </i>
+
+          <i class="fa-regular fa-paper-plane icon-img" 
+            id="dm-btn">
+          </i>
             </div>
             <div class="post-likes">
                 <p id="likes"><strong>${post.likes} likes</strong></p>
